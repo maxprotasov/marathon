@@ -10,7 +10,7 @@
   }
 %>
 
-<div class="py-2" data-controller="team-picker"
+<div class="py-2" x-data="teamPicker()"
   data-teams="<%= @active_teams.to_json %>"
   data-pit-lane-a="<%= @pit_lane_karts.where(pit_lane_name: 'A').to_json %>"
   data-pit-lane-b="<%= @pit_lane_karts.where(pit_lane_name: 'B').to_json %>"
@@ -23,7 +23,7 @@
     <div class="space-y-4 text-gray-300 flex flex-wrap">
       <% @colors.each do |name, hex| %>
         <div
-          data-action="click->team-picker#selectColor"
+          @click="selectColor"
           data-team-picker-color="<%= name %>"
           data-team-picker-hex="<%= hex %>"
           data-team-picker-target="colorOption"
@@ -36,7 +36,7 @@
     <div class="space-y-4 text-gray-300 flex flex-wrap">
       <% @active_teams.each do |team| %>
         <div
-          data-action="click->team-picker#selectTeam"
+          @click="selectTeam"
           data-team-picker-team-id="<%= team.id %>"
           data-team-picker-target="teamBox"
           style="background-color: <%= @colors.stringify_keys[team.color] %>;"
@@ -48,7 +48,7 @@
 
     <div class="flex justify-around w-full">
       <div
-        data-action="click->team-picker#assignTeamToPitLane"
+        @click="assignTeamToPitLane"
         data-team-picker-pit-lane-id="<%= @race.pit_lanes.find_by(name: "A").id %>"
         data-team-picker-target="pitLaneBox"
         class="min-h-120 p-2 flex flex-row-reverse items-center min-w-72 border-4 border-white rounded-2xl text-[90px]">
@@ -61,7 +61,7 @@
           <div class="teams-containerA">
             <% @pit_lane_karts.where(pit_lane_name: "A").each do |team| %>
             <div
-              data-action="click->team-picker#selectTeam"
+              @click="selectTeam"
               data-team-picker-team-id="<%= team.id %>"
               data-team-picker-target="teamBox"
               style="background-color: <%= @colors.stringify_keys[team.color] %>;"
@@ -80,7 +80,7 @@
           <div class="teams-containerB">
             <% @pit_lane_karts.where(pit_lane_name: "B").each do |team| %>
             <div
-              data-action="click->team-picker#selectTeam"
+              @click="selectTeam"
               data-team-picker-team-id="<%= team.id %>"
               data-team-picker-target="teamBox"
               style="background-color: <%= @colors.stringify_keys[team.color] %>;"
@@ -94,7 +94,7 @@
       </div>
       
       <div
-        data-action="click->team-picker#assignTeamToPitLane"
+        @click="assignTeamToPitLane"
         data-team-picker-pit-lane-id="<%= @race.pit_lanes.find_by(name: "B").id %>"
         data-team-picker-target="pitLaneBox"
         class="min-h-120 p-2 flex items-center min-w-72 border-4 border-white rounded-2xl text-[90px]">

@@ -6,9 +6,9 @@
   <% if @race.start_time %>
     <span id="countdown"
           class="font-mono text-base bg-yellow-600 rounded px-2 py-1 text-gray-100"
-          data-controller="countdown"
-          data-countdown-start-time-value="<%= @race.start_time&.iso8601 %>"
-          data-countdown-duration-value="<%= @race.duration_minutes %>">
+          x-data="countdown('<%= @race.start_time&.iso8601 %>', <%= @race.duration_minutes %>)"
+          x-init="init()"
+          x-text="time">
     </span>
   <% end %>
   <%= @race.name %>

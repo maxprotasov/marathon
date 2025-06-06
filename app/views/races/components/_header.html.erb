@@ -1,0 +1,15 @@
+<div class="font-bold mb-4 text-white flex mx-auto justify-between items-center">
+  <div class="space-x-3">
+    <%= link_to 'Назад', races_path,
+          class: 'text-base px-4 py-2 bg-gray-600 rounded text-white hover:bg-gray-700' %>
+  </div>
+  <% if @race.start_time %>
+    <span id="countdown"
+          class="font-mono text-base bg-yellow-600 rounded px-2 py-1 text-gray-100"
+          data-controller="countdown"
+          data-countdown-start-time-value="<%= @race.start_time&.iso8601 %>"
+          data-countdown-duration-value="<%= @race.duration_minutes %>">
+    </span>
+  <% end %>
+  <%= @race.name %>
+</div>

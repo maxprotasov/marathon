@@ -1,0 +1,44 @@
+<div class="max-w-4xl mx-auto mt-28 px-5">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-3xl font-bold text-white">Заезды</h1>
+    <%= link_to 'Новый Заезд', new_race_path,
+          class: 'px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700' %>
+  </div>
+
+  <div class="overflow-x-auto bg-gray-800 shadow-lg rounded-lg border border-gray-700">
+    <table class="min-w-full divide-y divide-gray-700">
+      <thead class="bg-gray-700">
+        <tr>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+            Имя заезда
+          </th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+            Старт
+          </th>
+          <th class="px-6 py-3"></th>
+        </tr>
+      </thead>
+      <tbody class="bg-gray-800 divide-y divide-gray-700">
+        <% @races.each do |race| %>
+          <tr class="hover:bg-gray-700">
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-100">
+              <%= race.name %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-100">
+              <%= race.start_time&.strftime('%Y-%m-%d %H:%M') %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-right space-x-2 flex justify-end">
+              <%= link_to 'Показать', race,
+                    class: 'px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700' %>
+              <%= link_to 'Редактировать', edit_race_path(race),
+                    class: 'px-2 py-1 bg-yellow-500 text-gray-900 rounded hover:bg-yellow-600' %>
+              <%= button_to 'X', race, method: :delete,
+                    form: { 'data-turbo-confirm': 'Вы уверены?' },
+                    class: 'px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700' %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

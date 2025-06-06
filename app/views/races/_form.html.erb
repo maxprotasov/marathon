@@ -1,0 +1,81 @@
+<%= form_with(model: @race, local: true, html: { class: "space-y-6 bg-gray-800 p-6 rounded-lg border border-gray-700" }) do |form| %>
+  <% if @race.errors.any? %>
+    <div id="error_explanation" class="bg-red-700 border border-red-600 text-red-100 p-4 rounded">
+      <h2 class="font-semibold text-lg text-red-100">
+        <%= pluralize(@race.errors.count, "ошибка") %> предотвратили сохранение:
+      </h2>
+      <ul class="mt-2 list-disc list-inside text-red-200">
+        <% @race.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="grid grid-cols-1 gap-6">
+    <div>
+      <%= form.label :name, "Название гонки", class: "block text-sm font-medium text-gray-200" %>
+      <%= form.text_field :name, class: "mt-1 block w-full bg-gray-700 border border-gray-600 text-gray-100 rounded p-2" %>
+    </div>
+
+    <div>
+      <%= form.label :duration_hours, "Длительность", class: "block text-sm font-medium text-gray-200 mb-2" %>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <%= form.label :duration_hours, "Часы", class: "block text-xs text-gray-300" %>
+          <%= form.number_field :duration_hours,
+                min: 0,
+                value: @race.duration_hours || 0,
+                class: "mt-1 block w-full bg-gray-700 border border-gray-600 text-gray-100 rounded p-2",
+                placeholder: "Часы" %>
+        </div>
+        <div>
+          <%= form.label :duration_minutes_input, "Минуты", class: "block text-xs text-gray-300" %>
+          <%= form.number_field :duration_minutes_input,
+                min: 0,
+                max: 59,
+                value: @race.duration_minutes_input || 0,
+                class: "mt-1 block w-full bg-gray-700 border border-gray-600 text-gray-100 rounded p-2",
+                placeholder: "Минуты" %>
+        </div>
+        <div>
+          <%= form.label :stints_length, "Кол-во стинтов", class: "block text-xs text-gray-300" %>
+          <%= form.number_field :stints_length,
+                min: 0,
+                value: @race.stints_length || 0,
+                class: "mt-1 block w-full bg-gray-700 border border-gray-600 text-gray-100 rounded p-2",
+                placeholder: "Кол-во стинтов" %>
+        </div>
+        <div>
+          <%= form.label :max_stint_time, "Макс.стинт(мин)", class: "block text-xs text-gray-300" %>
+          <%= form.number_field :max_stint_time,
+                min: 0,
+                value: @race.max_stint_time || 0,
+                class: "mt-1 block w-full bg-gray-700 border border-gray-600 text-gray-100 rounded p-2",
+                placeholder: "Макс.стинт(мин)" %>
+        </div>
+        <div>
+          <%= form.label :pit_lane_count, "Кол-во Питлейнов", class: "block text-xs text-gray-300" %>
+          <%= form.number_field :pit_lane_count,
+                min: 0,
+                value: @race.pit_lane_count || 0,
+                class: "mt-1 block w-full bg-gray-700 border border-gray-600 text-gray-100 rounded p-2",
+                placeholder: "Кол-во Питлейнов" %>
+        </div> 
+        <div>
+          <%= form.label :teams_count, "Кол-во Команд", class: "block text-xs text-gray-300" %>
+          <%= form.number_field :teams_count,
+                min: 0,
+                value: @race.teams_count || 0,
+                class: "mt-1 block w-full bg-gray-700 border border-gray-600 text-gray-100 rounded p-2",
+                placeholder: "Кол-во Команд" %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-right">
+    <%= form.submit @race.new_record? ? "Создать гонку" : "Обновить гонку",
+          class: "px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" %>
+  </div>
+<% end %>

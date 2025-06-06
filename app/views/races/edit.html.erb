@@ -1,0 +1,11 @@
+<% content_for :title, 'Редактирование гонки' %>
+<div class="max-w-3xl mx-auto py-8 px-4">
+  <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+    <h1 class="text-2xl font-bold mb-4 text-white">Редактирование гонки</h1>
+    <%= render 'form', race: @race %>
+    <div class="mt-6 flex space-x-3">
+      <%= link_to 'Просмотр', @race, class: 'px-4 py-2 bg-green-600 rounded text-white hover:bg-green-700' %>
+      <%= link_to 'Назад', races_path, class: 'px-4 py-2 bg-gray-600 rounded text-white hover:bg-gray-700' %>
+    </div>
+  </div>
+</div>

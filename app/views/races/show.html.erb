@@ -1,0 +1,114 @@
+<% @colors = {
+    purple: '#792894',
+    green: '#184815',
+    blue: '#1c368d',
+    yellow: '#c58908',
+    orange: '#fb8d1f',
+    red: '#d22c2c',
+    grey: '#636363',
+    brown: '#814810',
+  }
+%>
+
+<div class="py-2" data-controller="team-picker"
+  data-teams="<%= @active_teams.to_json %>"
+  data-pit-lane-a="<%= @pit_lane_karts.where(pit_lane_name: 'A').to_json %>"
+  data-pit-lane-b="<%= @pit_lane_karts.where(pit_lane_name: 'B').to_json %>"
+  data-race-id="<%= @race.id %>"
+>
+  <%= render "shared/header", race: @race %>
+
+  <div class="bg-gray-800 py-3 rounded-lg border border-gray-700 flex flex-col items-center" 
+    >
+    <div class="space-y-4 text-gray-300 flex flex-wrap">
+      <% @colors.each do |name, hex| %>
+        <div
+          data-action="click->team-picker#selectColor"
+          data-team-picker-color="<%= name %>"
+          data-team-picker-hex="<%= hex %>"
+          data-team-picker-target="colorOption"
+          class="cursor-pointer border-3 border-solid border-white rounded-full w-13 h-13 m-3 flex justify-center items-center"
+          style="background-color: <%= hex %>;">
+        </div>
+      <% end %>
+    </div>
+
+    <div class="space-y-4 text-gray-300 flex flex-wrap">
+      <% @active_teams.each do |team| %>
+        <div
+          data-action="click->team-picker#selectTeam"
+          data-team-picker-team-id="<%= team.id %>"
+          data-team-picker-target="teamBox"
+          style="background-color: <%= @colors.stringify_keys[team.color] %>;"
+          class="w-16 h-16 rounded-full m-2 flex items-center justify-center text-xl font-semibold text-white cursor-pointer transition-shadow hover:shadow-lg">
+          <%= team.name %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="flex justify-around w-full">
+      <div
+        data-action="click->team-picker#assignTeamToPitLane"
+        data-team-picker-pit-lane-id="<%= @race.pit_lanes.find_by(name: "A").id %>"
+        data-team-picker-target="pitLaneBox"
+        class="min-h-120 p-2 flex flex-row-reverse items-center min-w-72 border-4 border-white rounded-2xl text-[90px]">
+        <div class="mr-16">A</div>
+      </div>
+
+      <div class="min-h-97 text-[30px] min-w-54 flex justify-between">
+        <div class="flex flex-col">
+          <%= render "shared/add_team_button", race: @race, pit_lane: 'A' %>
+          <div class="teams-containerA">
+            <% @pit_lane_karts.where(pit_lane_name: "A").each do |team| %>
+            <div
+              data-action="click->team-picker#selectTeam"
+              data-team-picker-team-id="<%= team.id %>"
+              data-team-picker-target="teamBox"
+              style="background-color: <%= @colors.stringify_keys[team.color] %>;"
+              class="w-16 h-16 rounded-full m-2 flex items-center justify-center text-xl font-semibold text-white cursor-pointer transition-shadow hover:shadow-lg">
+              <%= team.name %>
+            </div>
+          <% end %>
+          </div>
+          <%= render "shared/delete_team_button", race: @race, pit_lane: 'A' %>
+        </div>
+
+        <div class="h-full w-[1px] bg-gray-400"></div>
+
+        <div class="flex flex-col">
+          <%= render "shared/add_team_button", race: @race, pit_lane: 'B' %>
+          <div class="teams-containerB">
+            <% @pit_lane_karts.where(pit_lane_name: "B").each do |team| %>
+            <div
+              data-action="click->team-picker#selectTeam"
+              data-team-picker-team-id="<%= team.id %>"
+              data-team-picker-target="teamBox"
+              style="background-color: <%= @colors.stringify_keys[team.color] %>;"
+              class="w-16 h-16 rounded-full m-2 flex items-center justify-center text-xl font-semibold text-white cursor-pointer transition-shadow hover:shadow-lg">
+              <%= team.name %>
+            </div>
+          <% end %>
+          </div>
+          <%= render "shared/delete_team_button", race: @race, pit_lane: 'B' %>
+        </div>
+      </div>
+      
+      <div
+        data-action="click->team-picker#assignTeamToPitLane"
+        data-team-picker-pit-lane-id="<%= @race.pit_lanes.find_by(name: "B").id %>"
+        data-team-picker-target="pitLaneBox"
+        class="min-h-120 p-2 flex items-center min-w-72 border-4 border-white rounded-2xl text-[90px]">
+        <div class="ml-16">B</div>
+        </div>
+    </div>
+  </div>
+
+  <div id="start_button" class="mt-4 text-center">
+    <% if @race.start_time.nil? %>
+      <%= button_to 'Начать гонку', start_race_path(@race), method: :post,
+            data: { turbo_stream: true, turbo_confirm: 'Уверены?' },
+            class: 'px-4 py-2 bg-green-600 rounded text-white hover:bg-green-700' %>
+    <% end %>
+  </div>
+</div>
+

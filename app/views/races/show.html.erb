@@ -10,12 +10,8 @@
   }
 %>
 
-<div class="py-2" data-controller="team-picker"
-  data-teams="<%= @active_teams.to_json %>"
-  data-pit-lane-a="<%= @pit_lane_karts.where(pit_lane_name: 'A').to_json %>"
-  data-pit-lane-b="<%= @pit_lane_karts.where(pit_lane_name: 'B').to_json %>"
-  data-race-id="<%= @race.id %>"
->
+<div class="py-2"
+  x-data='teamPicker(<%= raw @active_teams.to_json %>, <%= @race.id %>, <%= raw @colors.to_json %>)'>
   <%= render "shared/header", race: @race %>
 
   <div class="bg-gray-800 py-3 rounded-lg border border-gray-700 flex flex-col items-center" 
@@ -23,10 +19,8 @@
     <div class="space-y-4 text-gray-300 flex flex-wrap">
       <% @colors.each do |name, hex| %>
         <div
-          data-action="click->team-picker#selectColor"
-          data-team-picker-color="<%= name %>"
-          data-team-picker-hex="<%= hex %>"
-          data-team-picker-target="colorOption"
+          @click="chooseColor('<%= name %>', '<%= hex %>')"
+          :class="color === '<%= name %>' ? 'ring-4 ring-offset-2 ring-white' : ''"
           class="cursor-pointer border-3 border-solid border-white rounded-full w-13 h-13 m-3 flex justify-center items-center"
           style="background-color: <%= hex %>;">
         </div>
@@ -36,10 +30,9 @@
     <div class="space-y-4 text-gray-300 flex flex-wrap">
       <% @active_teams.each do |team| %>
         <div
-          data-action="click->team-picker#selectTeam"
-          data-team-picker-team-id="<%= team.id %>"
-          data-team-picker-target="teamBox"
-          style="background-color: <%= @colors.stringify_keys[team.color] %>;"
+          @click="chooseTeam(<%= team.id %>)"
+          :class="selectedTeamId == <%= team.id %> ? 'ring-4 ring-offset-2 ring-white' : ''"
+          :style="{ backgroundColor: colors[teams.find(t => t.id === <%= team.id %>).color] }"
           class="w-16 h-16 rounded-full m-2 flex items-center justify-center text-xl font-semibold text-white cursor-pointer transition-shadow hover:shadow-lg">
           <%= team.name %>
         </div>
@@ -48,9 +41,8 @@
 
     <div class="flex justify-around w-full">
       <div
-        data-action="click->team-picker#assignTeamToPitLane"
-        data-team-picker-pit-lane-id="<%= @race.pit_lanes.find_by(name: "A").id %>"
-        data-team-picker-target="pitLaneBox"
+        @click="assignTeamToPit(<%= @race.pit_lanes.find_by(name: 'A').id %>, 'A')"
+        :style="{ backgroundColor: colors[pitLaneAColor], borderColor: colors[pitLaneAColor] }"
         class="min-h-120 p-2 flex flex-row-reverse items-center min-w-72 border-4 border-white rounded-2xl text-[90px]">
         <div class="mr-16">A</div>
       </div>
@@ -61,10 +53,9 @@
           <div class="teams-containerA">
             <% @pit_lane_karts.where(pit_lane_name: "A").each do |team| %>
             <div
-              data-action="click->team-picker#selectTeam"
-              data-team-picker-team-id="<%= team.id %>"
-              data-team-picker-target="teamBox"
-              style="background-color: <%= @colors.stringify_keys[team.color] %>;"
+              @click="chooseTeam(<%= team.id %>)"
+              :class="selectedTeamId == <%= team.id %> ? 'ring-4 ring-offset-2 ring-white' : ''"
+              :style="{ backgroundColor: colors[teams.find(t => t.id === <%= team.id %>).color] }"
               class="w-16 h-16 rounded-full m-2 flex items-center justify-center text-xl font-semibold text-white cursor-pointer transition-shadow hover:shadow-lg">
               <%= team.name %>
             </div>
@@ -80,10 +71,9 @@
           <div class="teams-containerB">
             <% @pit_lane_karts.where(pit_lane_name: "B").each do |team| %>
             <div
-              data-action="click->team-picker#selectTeam"
-              data-team-picker-team-id="<%= team.id %>"
-              data-team-picker-target="teamBox"
-              style="background-color: <%= @colors.stringify_keys[team.color] %>;"
+              @click="chooseTeam(<%= team.id %>)"
+              :class="selectedTeamId == <%= team.id %> ? 'ring-4 ring-offset-2 ring-white' : ''"
+              :style="{ backgroundColor: colors[teams.find(t => t.id === <%= team.id %>).color] }"
               class="w-16 h-16 rounded-full m-2 flex items-center justify-center text-xl font-semibold text-white cursor-pointer transition-shadow hover:shadow-lg">
               <%= team.name %>
             </div>
@@ -94,9 +84,8 @@
       </div>
       
       <div
-        data-action="click->team-picker#assignTeamToPitLane"
-        data-team-picker-pit-lane-id="<%= @race.pit_lanes.find_by(name: "B").id %>"
-        data-team-picker-target="pitLaneBox"
+        @click="assignTeamToPit(<%= @race.pit_lanes.find_by(name: 'B').id %>, 'B')"
+        :style="{ backgroundColor: colors[pitLaneBColor], borderColor: colors[pitLaneBColor] }"
         class="min-h-120 p-2 flex items-center min-w-72 border-4 border-white rounded-2xl text-[90px]">
         <div class="ml-16">B</div>
         </div>

@@ -72,6 +72,27 @@
         </div>
       </div>
     </div>
+<div>
+      <%= form.label :team_updates, "Наши команды", class: "block text-sm font-medium text-gray-200 mb-2" %>
+      <div class="space-y-4">
+        <% 3.times do |i| %>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <%= number_field_tag "race[team_updates][][id]", nil,
+                    min: 1,
+                    class: "mt-1 block w-full bg-gray-700 border border-gray-600 text-gray-100 rounded p-2",
+                    placeholder: "ID команды" %>
+            </div>
+            <div>
+              <%= text_field_tag "race[team_updates][][name]", nil,
+                    class: "mt-1 block w-full bg-gray-700 border border-gray-600 text-gray-100 rounded p-2",
+                    placeholder: "Имя команды" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
   </div>
 
   <div class="text-right">

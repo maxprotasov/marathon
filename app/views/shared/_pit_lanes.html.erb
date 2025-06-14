@@ -1,0 +1,135 @@
+<div class="flex justify-around w-full">
+  <div
+    @click.stop="() => $store.teamPicker.store.$selectedTeamId && $store.teamPicker.actions.assignTeamToPitLane('A')"
+    class="min-h-120 p-2 flex flex-row-reverse items-center min-w-72 border-4 border-white rounded-2xl text-[90px] justify-between">
+    <div class="flex w-full">
+      <div class="flex flex-col flex-wrap gap-2 px-2 py-1">
+        <template x-for="(team, key) in $store.teamPicker.store.$snakeTeams.slice(0, 5)" :key="team.id">
+          <div
+              x-data
+              @click="() => {
+                $store.teamPicker.actions.selectTeamId(team.id)
+                $store.teamPicker.actions.assignTeamToPitLane('A')
+              }"
+              x-text="team.team_id"
+              class="w-16 h-16 rounded-2xl m-2 flex items-center justify-center text-xl font-semibold text-white cursor-pointer transition-shadow hover:shadow-lg"
+              :class="{
+                'rounded-full': ! team.our_team,
+                'border-4 border-solid border-white': team.id === $store.teamPicker.store.$selectedTeamId,
+                'bg-[#792894]': team.color === 'purple',
+                'bg-[#184815]': team.color === 'green',
+                'bg-[#1c368d]': team.color === 'blue',
+                'bg-[#c58908]': team.color === 'yellow',
+                'bg-[#fb8d1f]': team.color === 'orange',
+                'bg-[#d22c2c]': team.color === 'red',
+                'bg-[#636363]': team.color === 'grey',
+                'bg-[#814810]': team.color === 'brown',
+              }"
+              >
+            </div>
+        </template>
+      </div>
+      <div class="self-center ml-auto">A</div>
+    </div>
+  </div>
+
+  <div class="min-h-97 text-[30px] min-w-54 flex justify-between">
+    <div class="flex flex-col">
+      <%= render "shared/add_team_button", race: @race, pit_lane: 'A' %>
+      <div class="teams-containerA">
+        <template x-for="team in $store.teamPicker.store.$pitLaneStore" :key="team.id">
+          <div>
+            <template x-if="team.pit_lane_name === 'A'">
+              <div
+                @click="() => $store.teamPicker.store.$selectedColor ? $store.teamPicker.actions.assignToTeam({teamId: team.id}) : $store.teamPicker.actions.selectTeamId(team.id)"
+                :class="{
+                  'border-4 border-solid border-white': team.id === $store.teamPicker.store.$selectedTeamId,
+                  'bg-[#792894]': team.color === 'purple',
+                  'bg-[#184815]': team.color === 'green',
+                  'bg-[#1c368d]': team.color === 'blue',
+                  'bg-[#c58908]': team.color === 'yellow',
+                  'bg-[#fb8d1f]': team.color === 'orange',
+                  'bg-[#d22c2c]': team.color === 'red',
+                  'bg-[#636363]': team.color === 'grey',
+                  'bg-[#814810]': team.color === 'brown',
+                }"
+                x-text="'&uarr;'"
+                class="w-16 h-16 rounded-full m-2 flex items-center justify-center text-xl font-semibold text-white cursor-pointer transition-shadow hover:shadow-lg">
+              </div>
+            </template>
+          </div>
+        </template>
+      </div>
+      <%= render "shared/delete_team_button", race: @race, pit_lane: 'A' %>
+    </div>
+
+    <div class="h-full w-[1px] bg-gray-400"></div>
+
+    <div class="flex flex-col">
+      <%= render "shared/add_team_button", race: @race, pit_lane: 'B' %>
+      <div class="teams-containerA">
+        <template x-for="team in $store.teamPicker.store.$pitLaneStore" :key="team.id">
+          <div>
+            <template x-if="team.pit_lane_name === 'B'">
+              <div
+                @click="() => $store.teamPicker.store.$selectedColor ? $store.teamPicker.actions.assignToTeam({teamId: team.id}) : $store.teamPicker.actions.selectTeamId(team.id)"
+                :class="{
+                  'border-4 border-solid border-white': team.id === $store.teamPicker.store.$selectedTeamId,
+                  'bg-[#792894]': team.color === 'purple',
+                  'bg-[#184815]': team.color === 'green',
+                  'bg-[#1c368d]': team.color === 'blue',
+                  'bg-[#c58908]': team.color === 'yellow',
+                  'bg-[#fb8d1f]': team.color === 'orange',
+                  'bg-[#d22c2c]': team.color === 'red',
+                  'bg-[#636363]': team.color === 'grey',
+                  'bg-[#814810]': team.color === 'brown',
+                }"
+                x-text="'&uarr;'"
+                class="color-white w-16 h-16 rounded-full m-2 flex items-center justify-center text-xl font-semibold text-white cursor-pointer transition-shadow hover:shadow-lg">
+              </div>
+            </template>
+          </div>
+        </template>
+      </div>
+      <%= render "shared/delete_team_button", race: @race, pit_lane: 'B' %>
+    </div>
+  </div>
+  
+  <div
+    @click="() => {
+    console.log('suka', $store.teamPicker.store.$selectedTeamId) 
+    $store.teamPicker.store.$selectedTeamId && $store.teamPicker.actions.assignTeamToPitLane('B')}"
+    class="min-h-120 p-2 flex items-center min-w-72 border-4 border-white rounded-2xl text-[90px] justify-between">
+    <div class="flex w-full">
+      <div class="self-center mr-auto">B</div>
+      <div class="flex flex-col flex-wrap gap-2 px-2 py-1">
+        <template x-for="(team, key) in $store.teamPicker.store.$snakeTeams.slice(0, 5)" :key="team.id">
+          <div
+              x-data
+              @click.stop="() => {
+                $store.teamPicker.actions.selectTeamId(team.id)
+                $store.teamPicker.actions.assignTeamToPitLane('B')
+              }"
+              x-text="team.team_id"
+              class="w-16 h-16 rounded-2xl m-2 flex items-center justify-center text-xl font-semibold text-white cursor-pointer transition-shadow hover:shadow-lg"
+              :class="{
+                'rounded-full': ! team.our_team,
+                'border-4 border-solid border-white': team.id === $store.teamPicker.store.$selectedTeamId,
+                'bg-[#792894]': team.color === 'purple',
+                'bg-[#184815]': team.color === 'green',
+                'bg-[#1c368d]': team.color === 'blue',
+                'bg-[#c58908]': team.color === 'yellow',
+                'bg-[#fb8d1f]': team.color === 'orange',
+                'bg-[#d22c2c]': team.color === 'red',
+                'bg-[#636363]': team.color === 'grey',
+                'bg-[#814810]': team.color === 'brown',
+              }"
+              >
+            </div>
+        </template>
+      </div>
+    </div>
+  </div>
+</div>
+
+

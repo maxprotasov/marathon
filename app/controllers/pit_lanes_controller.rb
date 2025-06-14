@@ -3,12 +3,9 @@ class PitLanesController < ApplicationController
 
   def update
     if @pit_lane.update(pit_lane_params)
-      render json: {
-        id: @pit_lane.id,
-        team_id: @pit_lane.team_id,
-        team_name: @pit_lane.team&.name,
-        team_color: @pit_lane.team&.color    # вернём цвет, чтобы JS мог обновить фон
-      }, status: :ok
+
+      Team.assign_to_pit(pit_lane_params, params[:id])
+      render json: @pit_lane, status: :ok
     else
       render json: { errors: @pit_lane.errors.full_messages }, status: :unprocessable_entity
     end
@@ -17,10 +14,10 @@ class PitLanesController < ApplicationController
   private
 
   def set_pit_lane
-    @pit_lane = PitLane.find(params[:id])
+    @pit_lane = PitLane.find_by(name: params[:id])
   end
 
   def pit_lane_params
-    params.require(:pit_lane).permit(:team_id)
+    params.require(:pit_lane).permit(:team_id, :race_id, :id)
   end
 end

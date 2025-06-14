@@ -1,40 +1,77 @@
-import { createStore } from "effector";
-import Alpine from "alpinejs";
+import {
+  createEvent,
+  createStore,
+  createEffect,
+  sample,
+  combine,
+} from "effector";
 
-export function initCountdown(startTime, duration) {
-  if (!Alpine.store('countdown')) {
-    Alpine.store('countdown', '');
-  }
+export const initTimer = createEvent();
+export const setTimer = createEvent();
 
-  const $time = createStore('');
-  $time.watch((v) => {
-    Alpine.store('countdown', v);
-  });
+const timerTick = createEvent();
 
-  if (!startTime) {
-    $time.setState('Не начата');
-    return;
-  }
-
-  const start = new Date(startTime).getTime();
+const timerFx = createEffect().use(({ key, time, duration }) => {
+  const start = new Date(time).getTime();
   const finish = start + duration * 60_000;
-
-  const two = (n) => String(n).padStart(2, '0');
+  const two = (n) => String(n).padStart(2, "0");
 
   function update() {
     const now = Date.now();
-    const diff = finish - now;
+    let diff = finish - now;
     if (diff <= 0) {
-      $time.setState('00:00:00');
-      clearInterval(timer);
+      timerTick({ key, value: "00:00:00" });
+      clearInterval(intervalId);
       return;
     }
     const h = Math.floor(diff / 3_600_000);
-    const m = Math.floor((diff % 3_600_000) / 60_000);
-    const s = Math.floor((diff % 60_000) / 1000);
-    $time.setState(`${two(h)}:${two(m)}:${two(s)}`);
+    diff %= 3_600_000;
+    const m = Math.floor(diff / 60_000);
+    diff %= 60_000;
+    const s = Math.floor(diff / 1000);
+    timerTick({
+      key,
+      value: `${two(h)}:${two(m)}:${two(s)}`,
+    });
   }
 
+  // первый вызов сразу
   update();
-  const timer = setInterval(update, 1000);
-}
+  const intervalId = setInterval(update, 1000);
+
+  // по желанию вернуть intervalId, чтобы можно было чистить извне
+  return intervalId;
+});
+
+// --- 3) Связываем initTimer → timerFx ---
+
+sample({
+  clock: setTimer,
+  target: timerFx,
+});
+
+sample({
+  clock: initTimer,
+  target: timerFx,
+});
+
+// --- 4) Store: хранит все таймеры в виде { [key]: "HH:MM:SS", ... } ---
+const $timer = createStore({ common_timer: "00:00:00" }).on(
+  timerTick,
+  (state, { key, value }) => ({
+    ...state,
+    [key]: value,
+  }),
+);
+
+$timer.watch((time) => console.log(time));
+
+// Экспортируем стор и экшены
+export const stores = {
+  $timer,
+};
+export const actions = {
+  initTimer,
+  setTimer,
+};
+export const store = combine(stores);

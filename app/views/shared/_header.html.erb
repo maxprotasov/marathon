@@ -1,14 +1,17 @@
-<div class="font-bold mb-4 text-white flex mx-auto justify-between items-center">
-  <div class="space-x-3">
-    <%= link_to 'Назад', races_path,
-          class: 'text-base px-4 py-2 bg-gray-600 rounded text-white hover:bg-gray-700' %>
-  </div>
+<div class="font-bold px-4 mb-4 text-white flex mx-auto justify-between items-center">
+  <template x-for="team in $store.teamPicker.store.$ourTeams" :key="team.id">
+    <div
+      x-data
+      class="font-mono text-base rounded px-2 py-1 text-gray-100"
+      x-text="team.name + ' ' + team.completed_stints + '/<%= @race.stints_length %> ' + $store.countdown.store.$timer[team.id]"
+      @click="$store.countdown.actions.setTimer({key: team.id, time: Date.now(), duration: <%= @race.max_stint_time %>})"
+      x-init="$store.countdown.actions.initTimer({key: team.id, time: Date.now(), duration: 0})">
+    </div>
+  </template>
   <% if @race.start_time %>
-    <span id="countdown"
-          class="font-mono text-base bg-yellow-600 rounded px-2 py-1 text-gray-100"
-          x-text="$store.countdown"
-          x-init="initCountdown('<%= race.start_time&.iso8601 %>', <%= race.duration_minutes %>)">
+    <span class="font-mono text-base bg-yellow-600 rounded px-2 py-1 text-gray-100"
+          x-text="$store.countdown.store.$timer.common_timer"
+          x-init="$store.countdown.actions.initTimer({key: 'common_timer', time: '<%= @race.start_time&.iso8601 %>', duration: <%= @race.duration_minutes %>})">
     </span>
   <% end %>
-  <%= @race.name %>
 </div>

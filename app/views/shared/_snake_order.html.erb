@@ -1,0 +1,142 @@
+<div x-data class='flex relative'>
+  <div>
+    <div class="flex flex-row flex-wrap gap-2 px-2 py-1 justify-between">
+      <template x-for="team in $store.teamPicker.store.$snakeTeams.slice(19, -4)" :key="team.id">
+        <div
+            @click="() => $store.teamPicker.store.$selectedColor ? $store.teamPicker.actions.assignToTeam({teamId: team.id}) :  $store.teamPicker.actions.reorderSnake({id: team.id})"
+            x-text="team.team_id"
+            class="w-16 h-16 rounded-2xl m-2 flex items-center justify-center text-xl font-semibold text-white cursor-pointer transition-shadow hover:shadow-lg"
+            :class="{
+              'bg-[#636363] max-w-6': team.pitLaneBlock,
+              'rounded-full': ! team.our_team,
+              'border-4 border-solid border-white': team.id === $store.teamPicker.store.$selectedTeamId,
+              'bg-[#792894]': team.color === 'purple',
+              'bg-[#184815]': team.color === 'green',
+              'bg-[#1c368d]': team.color === 'blue',
+              'bg-[#c58908]': team.color === 'yellow',
+              'bg-[#fb8d1f]': team.color === 'orange',
+              'bg-[#d22c2c]': team.color === 'red',
+              'bg-[#636363]': team.color === 'grey',
+              'bg-[#814810]': team.color === 'brown',
+            }"
+            >
+          </div>
+      </template>
+    </div>
+    <div class="ml-auto w-[87%] h-[1px] bg-gray-400"></div>
+    <div class="flex flex-row-reverse flex-wrap gap-2 px-2 py-1">
+      <template x-for="team in $store.teamPicker.store.$snakeTeams.slice(10, 19)" :key="team.id">
+        <div
+            @click="() => $store.teamPicker.store.$selectedColor ? $store.teamPicker.actions.assignToTeam({teamId: team.id}) :  $store.teamPicker.actions.reorderSnake({id: team.id})"
+            x-text="team.team_id"
+            class="w-16 h-16 rounded-2xl m-2 flex items-center justify-center text-xl font-semibold text-white cursor-pointer transition-shadow hover:shadow-lg"
+            :class="{
+              'bg-[#636363] max-w-6': team.pitLaneBlock,
+              'rounded-full': ! team.our_team,
+              'border-4 border-solid border-white': team.id === $store.teamPicker.store.$selectedTeamId,
+              'bg-[#792894]': team.color === 'purple',
+              'bg-[#184815]': team.color === 'green',
+              'bg-[#1c368d]': team.color === 'blue',
+              'bg-[#c58908]': team.color === 'yellow',
+              'bg-[#fb8d1f]': team.color === 'orange',
+              'bg-[#d22c2c]': team.color === 'red',
+              'bg-[#636363]': team.color === 'grey',
+              'bg-[#814810]': team.color === 'brown',
+            }"
+            >
+        </div>
+      </template>
+    </div>
+    <div class="w-[87%] h-[1px] bg-gray-400"></div>
+
+    <div class="flex flex-row flex-wrap gap-2 px-2 py-1">
+      <template x-for="team in $store.teamPicker.store.$snakeTeams.slice(1, 10)" :key="team.id">
+        <div
+            x-data
+            @click="() => $store.teamPicker.store.$selectedColor ? $store.teamPicker.actions.assignToTeam({teamId: team.id}) : $store.teamPicker.actions.reorderSnake({id: team.id})"
+            x-text="team.team_id"
+            class="w-16 h-16 rounded-2xl m-2 flex items-center justify-center text-xl font-semibold text-white cursor-pointer transition-shadow hover:shadow-lg"
+            :class="{
+              'bg-[#636363] max-w-6': team.pitLaneBlock,
+              'rounded-full': ! team.our_team,
+              'border-4 border-solid border-white': team.id === $store.teamPicker.store.$selectedTeamId,
+              'bg-[#792894]': team.color === 'purple',
+              'bg-[#184815]': team.color === 'green',
+              'bg-[#1c368d]': team.color === 'blue',
+              'bg-[#c58908]': team.color === 'yellow',
+              'bg-[#fb8d1f]': team.color === 'orange',
+              'bg-[#d22c2c]': team.color === 'red',
+              'bg-[#636363]': team.color === 'grey',
+              'bg-[#814810]': team.color === 'brown',
+            }"
+            >
+          </div>
+      </template>
+    </div>
+    <div class=" ml-auto w-[87%] h-[1px] bg-gray-400"></div>
+    <div class="flex flex-row flex-wrap gap-2 px-2 py-1">
+      <template x-for="team in $store.teamPicker.store.$snakeTeams.slice(0, 1)" :key="team.id">
+        <div
+            x-data
+            @click="() => $store.teamPicker.store.$selectedColor ? $store.teamPicker.actions.assignToTeam({teamId: team.id}) : $store.teamPicker.actions.reorderSnake({id: team.id})"
+            x-text="team.team_id"
+            class="w-16 h-16 rounded-2xl m-2 flex items-center justify-center text-xl font-semibold text-white cursor-pointer transition-shadow hover:shadow-lg"
+            :class="{
+              'bg-[#636363] max-w-6': team.pitLaneBlock,
+              'rounded-full': ! team.our_team,
+              'border-4 border-solid border-white': team.id === $store.teamPicker.store.$selectedTeamId,
+              'bg-[#792894]': team.color === 'purple',
+              'bg-[#184815]': team.color === 'green',
+              'bg-[#1c368d]': team.color === 'blue',
+              'bg-[#c58908]': team.color === 'yellow',
+              'bg-[#fb8d1f]': team.color === 'orange',
+              'bg-[#d22c2c]': team.color === 'red',
+              'bg-[#636363]': team.color === 'grey',
+              'bg-[#814810]': team.color === 'brown',
+            }"
+            >
+          </div>
+      </template>
+    </div>
+  </div>
+
+  <div class="flex-col absolute bottom-[4px] right-[470px]">
+    <template x-for="i in [1, 2, 3, 4, 5]" :key="i">
+      <div class="flex">
+        <div class="w-4 h-4" :class="{ 'bg-white': i === 1 || i === 3 || i === 5 }">
+        </div>
+
+        <div class="w-4 h-4" :class="{ 'bg-white': i === 2 || i === 4 }">
+        </div>
+      </div>
+    </template>
+  </div>
+
+  <div class="flex items-center">
+    <div class="h-[50%] w-[1px] bg-gray-400"></div>
+    <div class="flex flex-col flex-wrap gap-2 px-2 py-1 items-center">
+      <template x-for="(team, key) in $store.teamPicker.store.$snakeTeams.slice(-4)" :key="team.id">
+        <div
+            x-data
+            @click="() => $store.teamPicker.store.$selectedColor ? $store.teamPicker.actions.assignToTeam({teamId: team.id}) : $store.teamPicker.actions.reorderSnake({id: team.id})"
+            x-text="team.team_id"
+            class="w-16 h-16 rounded-2xl m-2 flex items-center justify-center text-xl font-semibold text-white cursor-pointer transition-shadow hover:shadow-lg"
+            :class="{
+              'bg-[#636363] max-w-6': team.pitLaneBlock,
+              'rounded-full': ! team.our_team,
+              'border-4 border-solid border-white': team.id === $store.teamPicker.store.$selectedTeamId,
+              'bg-[#792894]': team.color === 'purple',
+              'bg-[#184815]': team.color === 'green',
+              'bg-[#1c368d]': team.color === 'blue',
+              'bg-[#c58908]': team.color === 'yellow',
+              'bg-[#fb8d1f]': team.color === 'orange',
+              'bg-[#d22c2c]': team.color === 'red',
+              'bg-[#636363]': team.color === 'grey',
+              'bg-[#814810]': team.color === 'brown',
+            }"
+            >
+          </div>
+      </template>
+    </div>
+  </div>
+</div>

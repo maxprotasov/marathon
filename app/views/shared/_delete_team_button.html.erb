@@ -1,7 +1,5 @@
 <button
-  @click="deleteTeamFromPitLane"
-  data-delete-team-pitlane="<%= pit_lane %>"
-  data-delete-team-race="<%= race %>"
+  @click="$store.teamPicker.actions.deleteTeamFromPitLane({raceId: '<%= race.id%>', pitLaneName: '<%= pit_lane %>' })"
   class="flex w-16 h-16 hover:shadow-lg hover:border-gray-300 hover:text-gray-300 pb-1.5 border-gray-700 border-4 rounded-full m-2 flex items-center justify-center text-5xl font-semibold text-gray-700 cursor-pointer transition-shadow hover:shadow-lg"
 >
   &times;

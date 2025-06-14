@@ -38,7 +38,6 @@ class RacesController < ApplicationController
   end
 
   def update
-    binding.pry
     if @race.update(race_params)
       redirect_to @race, notice: 'Race was successfully updated.'
     else
@@ -85,10 +84,15 @@ class RacesController < ApplicationController
     race.pit_lanes.create!(name: 'A')
     race.pit_lanes.create!(name: 'B')
 
+    our_teams = params[:race][:team_updates]
+
     (1..race.teams_count.to_i).each do |i|
+      our_team = our_teams.select {|t| t[:id].to_i === i}.first
+
       race.teams.create!(
-        name: "#{i}",
+        name: "#{our_team.blank? ? i : our_team[:name]}",
         team_id: i,
+        our_team: !our_team.blank? 
       )
     end
   end

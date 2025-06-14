@@ -2,9 +2,12 @@ Rails.application.routes.draw do
   resources :races do
     member { post :start }
   end
-  resources :teams, only: [:create, :update, :destroy]
+  resources :teams, only: [:create, :update, :destroy] do 
+    member do 
+      patch :update_pit_lane
+    end
+  end
   resources :pit_lanes, only: [:update]
-  delete "/teams/delete_last_for_pit", to: "teams#delete_last_for_pit"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
